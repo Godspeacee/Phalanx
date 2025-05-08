@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { GoIssueTracks } from "react-icons/go";
+
+import { AiOutlineIssuesClose } from "react-icons/ai";
 import React from "react";
 import { usePathname } from "next/navigation";
 import classnames from "classnames";
@@ -14,7 +15,7 @@ const NavBar = () => {
   return (
     <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
       <Link href={"/"}>
-        <GoIssueTracks />
+        <AiOutlineIssuesClose />
       </Link>
       <ul className="flex space-x-6">
         {links.map((link) => (
