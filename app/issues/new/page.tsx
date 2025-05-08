@@ -1,5 +1,5 @@
 "use client";
-import { Button, Callout, Text, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextField } from "@radix-ui/themes";
 import { useForm, Controller } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 import axios from "axios";
@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchma } from "@/app/validationSchma";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Fiject from "@/app/components/Fiject";
 
 type IssueFrom = z.infer<typeof createIssueSchma>;
 
@@ -22,6 +23,7 @@ const NewIssuePage = () => {
     formState: { errors },
   } = useForm<IssueFrom>({ resolver: zodResolver(createIssueSchma) });
   const [error, setError] = useState("");
+  const [isSubmitting, setIssueSubmitting] = useState(false);
   return (
     <div className="max-w-xl">
       {error && (
@@ -33,9 +35,11 @@ const NewIssuePage = () => {
         className=" space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setIssueSubmitting(true);
             await axios.post("/api/issues", data);
             navigate.push("/issues");
           } catch (error) {
+            setIssueSubmitting(false);
             setError("Error creating issue");
           }
         })}
@@ -54,7 +58,10 @@ const NewIssuePage = () => {
         />
         <ErrorMessage> {errors.description?.message}</ErrorMessage>
 
-        <Button>Submit New Issue</Button>
+        <Button disabled={isSubmitting}>
+          {" "}
+          Submit New Issue {isSubmitting && <Fiject />}
+        </Button>
       </form>
     </div>
   );
