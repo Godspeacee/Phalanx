@@ -24,6 +24,16 @@ const NewIssuePage = () => {
   } = useForm<IssueFrom>({ resolver: zodResolver(createIssueSchma) });
   const [error, setError] = useState("");
   const [isSubmitting, setIssueSubmitting] = useState(false);
+  const onsubmit = handleSubmit(async (data) => {
+    try {
+      setIssueSubmitting(true);
+      await axios.post("/api/issues", data);
+      navigate.push("/issues");
+    } catch (error) {
+      setIssueSubmitting(false);
+      setError("Error creating issue");
+    }
+  });
   return (
     <div className="max-w-xl">
       {error && (
@@ -31,19 +41,7 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className=" space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setIssueSubmitting(true);
-            await axios.post("/api/issues", data);
-            navigate.push("/issues");
-          } catch (error) {
-            setIssueSubmitting(false);
-            setError("Error creating issue");
-          }
-        })}
-      >
+      <form className=" space-y-3" onSubmit={onsubmit}>
         <TextField.Root
           placeholder="Title"
           {...register("title")}
