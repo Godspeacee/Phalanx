@@ -1,5 +1,5 @@
-import { Button, Table } from "@radix-ui/themes";
-import Link from "next/link";
+import { Table } from "@radix-ui/themes";
+
 import React from "react";
 import { Skeleton } from "@/app/components";
 import IssuesToolBar from "./IssuesToolBar";
@@ -10,12 +10,6 @@ const LoadingIssuesPage = () => {
     <>
       <IssuesToolBar />
       <div>
-        <div className="mb-5">
-          <Button>
-            <Link href={"/issues/new"}> New Issue</Link>
-          </Button>
-        </div>
-
         <Table.Root variant="surface">
           <Table.Header>
             <Table.Row>
