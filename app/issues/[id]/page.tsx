@@ -3,7 +3,7 @@ import { Box, Button, Grid } from "@radix-ui/themes";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EditIssueButton from "./EditIssueButton";
-import IssueDetails from "./issueDetails";
+import IssueDetails from "./IssueDetails";
 
 interface Props {
   params: { id: string };
