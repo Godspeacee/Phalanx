@@ -22,7 +22,7 @@ const SimpleMDE = dynamic(
 type IssueFormData = z.infer<typeof issueSchma>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
-  const navigate = useRouter();
+  const router = useRouter();
   const {
     register,
     control,
@@ -36,7 +36,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       setIssueSubmitting(true);
       if (issue) await axios.patch("/api/issues" + issue.id, data);
       else await axios.post("/api/issues", data);
-      navigate.push("/issues");
+      router.push("/issues");
+      router.refresh();
     } catch (error) {
       setIssueSubmitting(false);
       setError("Error creating issue");
