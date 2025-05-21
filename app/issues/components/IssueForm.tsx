@@ -7,7 +7,7 @@ import "easymde/dist/easymde.min.css";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchma } from "@/app/validationSchma";
+import { issueSchma } from "@/app/validationSchma";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Fiject from "@/app/components/Fiject";
@@ -19,7 +19,7 @@ const SimpleMDE = dynamic(
   { ssr: false }
 );
 
-type IssueFormData = z.infer<typeof createIssueSchma>;
+type IssueFormData = z.infer<typeof issueSchma>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const navigate = useRouter();
@@ -28,7 +28,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<IssueFormData>({ resolver: zodResolver(createIssueSchma) });
+  } = useForm<IssueFormData>({ resolver: zodResolver(issueSchma) });
   const [error, setError] = useState("");
   const [isSubmitting, setIssueSubmitting] = useState(false);
   const onsubmit = handleSubmit(async (data) => {
