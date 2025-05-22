@@ -6,6 +6,7 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import classnames from "classnames";
 import { Avatar, Box, DropdownMenu, Flex, Text } from "@radix-ui/themes";
+import { Skeleton } from "./components";
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -14,6 +15,7 @@ const NavBar = () => {
     { id: "1", label: "Dashboard", href: "/" },
     { id: "2", label: "Issues", href: "/issues" },
   ];
+
   return (
     <nav className=" border-b mb-5 px-5 py-3 ">
       <Flex justify={"between"}>
@@ -39,6 +41,7 @@ const NavBar = () => {
         </Flex>
         <Box>
           {" "}
+          {status === "loading" && <Skeleton width={"3rem"} />}
           {status === "authenticated" && (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
