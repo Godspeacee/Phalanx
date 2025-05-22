@@ -8,7 +8,7 @@ const AssigneeSelect = () => {
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await axios.get<User[]>("api/users");
+      const { data } = await axios.get<User[]>("/api/users");
       setUsers(data);
     };
     fetchUser();
