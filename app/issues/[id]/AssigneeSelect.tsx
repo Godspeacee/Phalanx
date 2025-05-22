@@ -15,24 +15,23 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   } = useQuery<User[]>({
     queryKey: ["user"],
     queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000,
+    staleTime: 10 * (60 * 1000), // 10 minutes
     retry: 3,
   });
   if (isLoading) return <Skeleton />;
   if (error) return null;
+  const assignIssue = async (userId: string) => {
+    await axios
+      .patch("/api/issues/" + issue.id, {
+        assignedToUserId: userId,
+      })
+      .catch(() => {
+        toast.error("Failed to assign user");
+      });
+  };
   return (
     <>
-      <Select.Root
-        onValueChange={async (userId) => {
-          await axios
-            .patch("/api/issues/" + issue.id, {
-              assignedToUserId: userId,
-            })
-            .catch(() => {
-              toast.error("Failed to assign user");
-            });
-        }}
-      >
+      <Select.Root onValueChange={assignIssue}>
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
           <Select.Group>
