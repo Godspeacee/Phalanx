@@ -1,6 +1,7 @@
 import authOptions from "@/app/auth/authOptions";
-import { issueSchma } from "@/app/validationSchma";
+import {  patchIssueSchma } from "@/app/validationSchma";
 import prisma from "@/prisma/clientfile";
+import { error } from "console";
 
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,10 +13,15 @@ export async function PATCH(
       if(!session)
   return NextResponse.json({}, {status:401})
     const body =  await request.json()
-    const validation = issueSchma.safeParse(body)
+    const validation = patchIssueSchma.safeParse(body)
     if(!validation.success)
         return NextResponse.json(validation.error.format(), {status:400})
-
+    const {assignedToUserId,title,description,status} = body
+    if (assignedToUserId) {
+        const user = await prisma.user.findUnique({where:{id:assignedToUserId}})
+        if(!user)
+            return  NextResponse.json({error:'Invakid user'}, {status:400})
+    }
     const issue = await prisma.issue.findUnique({
         where:{id:parseInt(params.id)}
      
@@ -26,9 +32,10 @@ export async function PATCH(
     const updatedIssue = await prisma.issue.update({
         where:{id:issue.id},
         data:{
-            title:body.title,
-            description:body.description,
-            status:body.status
+            title,
+            description,
+            status,
+            assignedToUserId
         }
     })
     return NextResponse.json(updatedIssue)
