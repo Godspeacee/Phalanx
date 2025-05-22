@@ -5,7 +5,7 @@ import { AiOutlineIssuesClose } from "react-icons/ai";
 import React from "react";
 import { usePathname } from "next/navigation";
 import classnames from "classnames";
-import { Box } from "@radix-ui/themes";
+import { Avatar, Box, DropdownMenu, Flex, Text } from "@radix-ui/themes";
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -15,34 +15,72 @@ const NavBar = () => {
     { id: "2", label: "Issues", href: "/issues" },
   ];
   return (
-    <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
-      <Link href={"/"}>
-        <AiOutlineIssuesClose />
-      </Link>
-      <ul className="flex space-x-6">
-        {links.map((link) => (
-          <li key={link.id}>
+    <nav className=" border-b mb-5 px-5 py-3 ">
+      <Flex justify={"between"}>
+        <Flex align={"center"} gap={"3"}>
+          <Link href={"/"}>
+            <AiOutlineIssuesClose />
+          </Link>
+          <ul className="flex space-x-6">
+            {links.map((link) => (
+              <li key={link.id}>
+                <Link
+                  className={classnames({
+                    "text-purple-600": currentPath === link.href,
+                    "hover:text-purple-400 transition-colors": true,
+                  })}
+                  href={link.href}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Flex>
+        <Box>
+          {" "}
+          {status === "authenticated" && (
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <Avatar
+                  src={session.user!.image!}
+                  fallback="?"
+                  size={"2"}
+                  radius="full"
+                  className="cursor-pointer"
+                />
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                <DropdownMenu.Label>
+                  <Text size={"2"}>{session.user?.email}</Text>
+                </DropdownMenu.Label>
+                <DropdownMenu.Item>
+                  <Link
+                    className={classnames({
+                      "text-purple-600": currentPath === "api/auth/signout",
+                      "hover:text-purple-400 transition-colors": true,
+                    })}
+                    href="/api/auth/signout"
+                  >
+                    Log Out
+                  </Link>
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          )}
+          {status === "unauthenticated" && (
             <Link
               className={classnames({
-                "text-purple-600": currentPath === link.href,
+                "text-purple-600": currentPath === "api/auth/signin",
                 "hover:text-purple-400 transition-colors": true,
               })}
-              href={link.href}
+              href="/api/auth/signin"
             >
-              {link.label}
+              Login
             </Link>
-          </li>
-        ))}
-      </ul>
-      <Box>
-        {" "}
-        {status === "authenticated" && (
-          <Link href="/api/auth/signout">Log Out</Link>
-        )}
-        {status === "unauthenticated" && (
-          <Link href="/api/auth/signin">Login</Link>
-        )}
-      </Box>
+          )}
+        </Box>
+      </Flex>
     </nav>
   );
 };
