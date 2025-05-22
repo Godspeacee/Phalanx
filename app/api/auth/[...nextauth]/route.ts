@@ -12,6 +12,7 @@ const handler = NextAuth({
    session: {
     strategy: 'jwt',
   },
+  debug: true,
   
 })
 

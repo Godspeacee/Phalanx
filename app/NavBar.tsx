@@ -1,13 +1,15 @@
 "use client";
 import Link from "next/link";
-
+import { useSession } from "next-auth/react";
 import { AiOutlineIssuesClose } from "react-icons/ai";
 import React from "react";
 import { usePathname } from "next/navigation";
 import classnames from "classnames";
+import { Box } from "@radix-ui/themes";
 
 const NavBar = () => {
   const currentPath = usePathname();
+  const { status, data: session } = useSession();
   const links = [
     { id: "1", label: "Dashboard", href: "/" },
     { id: "2", label: "Issues", href: "/issues" },
@@ -19,18 +21,28 @@ const NavBar = () => {
       </Link>
       <ul className="flex space-x-6">
         {links.map((link) => (
-          <Link
-            key={link.id}
-            className={classnames({
-              "text-purple-600": currentPath === link.href,
-              "hover:text-purple-400 transition-colors": true,
-            })}
-            href={link.href}
-          >
-            {link.label}
-          </Link>
+          <li key={link.id}>
+            <Link
+              className={classnames({
+                "text-purple-600": currentPath === link.href,
+                "hover:text-purple-400 transition-colors": true,
+              })}
+              href={link.href}
+            >
+              {link.label}
+            </Link>
+          </li>
         ))}
       </ul>
+      <Box>
+        {" "}
+        {status === "authenticated" && (
+          <Link href="/api/auth/signout">Log Out</Link>
+        )}
+        {status === "unauthenticated" && (
+          <Link href="/api/auth/signin">Login</Link>
+        )}
+      </Box>
     </nav>
   );
 };
