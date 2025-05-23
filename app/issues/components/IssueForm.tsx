@@ -70,22 +70,24 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         />
         <ErrorMessage> {errors.description?.message}</ErrorMessage>
         <Grid gap={"4"}>
-          <Controller
-            name="status"
-            control={control}
-            render={({ field }) => (
-              <Select.Root onValueChange={field.onChange} value={field.value}>
-                <Select.Trigger placeholder="Select status..." />
-                <Select.Content>
-                  {statusOptions.map(([key, label]) => (
-                    <Select.Item key={key} value={label}>
-                      {label}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select.Root>
-            )}
-          />
+          {issue && (
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <Select.Root onValueChange={field.onChange} value={field.value}>
+                  <Select.Trigger placeholder="Select status..." />
+                  <Select.Content>
+                    {statusOptions.map(([key, label]) => (
+                      <Select.Item key={key} value={label}>
+                        {label}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select.Root>
+              )}
+            />
+          )}
           <ErrorMessage>{errors.status?.message}</ErrorMessage>
           <Button disabled={isSubmitting}>
             {" "}

@@ -1,5 +1,5 @@
 import prisma from "@/prisma/clientfile";
-import { Box, Button, Flex, Grid } from "@radix-ui/themes";
+import { Box, Button, Flex, Grid, Select } from "@radix-ui/themes";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EditIssueButton from "./EditIssueButton";
@@ -15,8 +15,17 @@ interface Props {
 
 const IssueDetailPage = async ({ params }: Props) => {
   const session = await getServerSession(authOptions);
+
+  const issueId = parseInt(params.id);
+  if (isNaN(issueId)) {
+    // Avoid Prisma crash
+    return notFound();
+  }
+  console.log("params.id =", params.id);
+  console.log("parsed issueId =", issueId);
+
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: issueId },
   });
 
   if (!issue) notFound();
