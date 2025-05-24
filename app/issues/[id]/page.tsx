@@ -4,6 +4,7 @@ import { Button, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
+import ReactMarkDown from "react-markdown";
 
 interface Props {
   params: { id: string };
@@ -24,7 +25,9 @@ const IssueDetailPage = async ({ params }: Props) => {
           <IssueStatusBadge status={issue.status} />
           <Text> {issue.createdAt.toDateString()}</Text>
         </Flex>
-        <Card>{issue.description}</Card>
+        <Card mt={"4"}>
+          <ReactMarkDown>{issue.description}</ReactMarkDown>
+        </Card>
       </div>
       <Button>
         <Link href={"/issues"}>Back</Link>
