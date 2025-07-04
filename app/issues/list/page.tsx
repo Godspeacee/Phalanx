@@ -3,18 +3,29 @@ import { Table } from "@radix-ui/themes";
 import { Link, IssueStatusBadge } from "@/app/components";
 import IssuesToolBar from "./IssuesToolBar";
 import { Status } from "../../generated/prisma";
+import Pagination from "../components/Pagination";
 
 interface Props {
-  searchParams: { status: Status };
+  searchParams: { status: Status; page: string };
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
   const statues = Object.values(Status);
+
   const status = statues.includes(searchParams.status)
     ? searchParams.status
     : undefined;
+  const where = { status };
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
   const issues = await prisma.issue.findMany({
-    where: { status },
+    where,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  const issueCount = await prisma.issue.count({
+    where,
   });
 
   return (
@@ -54,6 +65,11 @@ const IssuesPage = async ({ searchParams }: Props) => {
             ))}
           </Table.Body>
         </Table.Root>
+        <Pagination
+          pageSize={pageSize}
+          currentPage={page}
+          itemCount={issueCount}
+        />
       </div>
     </>
   );
