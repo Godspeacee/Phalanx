@@ -13,7 +13,7 @@ const NavBar = () => {
   const { status, data: session } = useSession();
   const links = [
     { id: "1", label: "Dashboard", href: "/" },
-    { id: "2", label: "Issues", href: "/issues" },
+    { id: "2", label: "Issues", href: "/issues/list" },
   ];
 
   return (
