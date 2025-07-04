@@ -1,18 +1,17 @@
 "use client";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Fiject from "@/app/components/Fiject";
-import { Issue } from "@/app/generated/prisma";
-import { issueSchma, patchIssueSchma } from "@/app/validationSchma";
+import { Issue, Status } from "@/app/generated/prisma";
+import { patchIssueSchma } from "@/app/validationSchma";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Callout, Grid, Select, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import dynamic from "next/dynamic";
 import { z } from "zod";
-import { Status } from "@/app/generated/prisma";
 
 const SimpleMDE = dynamic(
   () => import("react-simplemde-editor"),
