@@ -18,8 +18,6 @@ const IssueStatusFilter = () => {
       onValueChange={(status) => {
         const query = status ? `?status=${status}` : "";
         router.push("/issues/list" + query);
-
-        console.log(status);
       }}
     >
       <Select.Trigger placeholder="Filter by status..." />
