@@ -24,6 +24,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     await axios
       .patch("/api/issues/" + issue.id, {
         assignedToUserId: userId,
+        status: "IN_PROGRESS",
       })
       .catch(() => {
         toast.error("Failed to assign user");
