@@ -3,6 +3,7 @@ import { Issue, Status } from "@/app/generated/prisma";
 import { Table } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
+
 export interface IssueQuery {
   status: Status;
   page: string;
