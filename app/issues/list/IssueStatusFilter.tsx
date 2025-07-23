@@ -27,11 +27,11 @@ const IssueStatusFilter = () => {
         } else {
           params.set("status", value);
         }
-        params.set("page", "1"); // Reset to page 1 when filtering
+        params.set("page", "1");
         router.push(`${pathname}?${params.toString()}`);
       }}
     >
-      <Select.Trigger placeholder="Filter by status..." />
+      <Select.Trigger />
       <Select.Content>
         {statuses.map((status) => (
           <Select.Item
