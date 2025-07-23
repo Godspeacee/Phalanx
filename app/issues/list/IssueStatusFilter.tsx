@@ -31,7 +31,7 @@ const IssueStatusFilter = () => {
         router.push(`${pathname}?${params.toString()}`);
       }}
     >
-      <Select.Trigger />
+      <Select.Trigger placeholder={currentStatus} />
       <Select.Content>
         {statuses.map((status) => (
           <Select.Item
