@@ -7,17 +7,16 @@ import { Flex } from "@radix-ui/themes";
 import { Metadata } from "next";
 
 interface Props {
-  searchParams: IssueQuery;
+  searchParams: Promise<IssueQuery>;
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
+  const params = await searchParams;
   const statues = Object.values(Status);
 
-  const status = statues.includes(searchParams.status)
-    ? searchParams.status
-    : undefined;
-  const where = { status };
-  const page = parseInt(searchParams.page) || 1;
+  const status = statues.includes(params.status) ? params.status : undefined;
+  const where = status ? { status } : {};
+  const page = parseInt(params.page) || 1;
   const pageSize = 10;
   const issues = await prisma.issue.findMany({
     where,
@@ -33,7 +32,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
     <>
       <Flex direction={"column"} gap={"3"}>
         <IssuesToolBar />
-        <IssueTable searchParams={searchParams} issues={issues} />
+        <IssueTable searchParams={params} issues={issues} />
         <Pagination
           pageSize={pageSize}
           currentPage={page}
